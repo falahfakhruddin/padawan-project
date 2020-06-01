@@ -1,4 +1,4 @@
-# Flask App Template
+# Pandawa Project
 
-**An complete Flask application template, with useful plugins.**
+**A Service to determine the middle location for meeting point.**
 
