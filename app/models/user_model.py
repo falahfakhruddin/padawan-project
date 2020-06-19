@@ -3,25 +3,17 @@
 Python Aplication Template
 Licence: GPLv3
 """
+from flask_login._compat import unicode
 
 from app import db
 
 
-class ModelExample(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(250))
-    content = db.Column(db.Text)
-    date = db.Column(db.DateTime)
-
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(500))
-    name = db.Column(db.String(500))
-    email = db.Column(db.String(120), unique=True)
-
-    # posts = db.relationship('Post', backref = 'author', lazy = 'dynamic')
+class User(db.Document):
+    id = db.IntField(required=True)
+    user = db.StringField()
+    password = db.StringField()
+    name = db.StringField()
+    email = db.StringField()
 
     def is_authenticated(self):
         return True

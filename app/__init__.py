@@ -6,23 +6,33 @@ Licence: GPLv3
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
+from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 
-app = Flask(__name__)
 
-#Configuration of application, see configuration.py, choose one and uncomment.
-#app.config.from_object('configuration.ProductionConfig')
-app.config.from_object('app.configuration.DevelopmentConfig')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config.from_object('configuration.TestingConfig')
+from arcgis.gis import GIS
 
-Bootstrap(app) #flask-bootstrap
-db = SQLAlchemy(app) #flask-sqlalchemy
 
+db = MongoEngine()
 lm = LoginManager()
-lm.init_app(app)
-lm.login_view = 'login'
 
-from app import models
-from app.routers import views
+
+def create_app():
+    app = Flask(__name__)
+    gis = GIS("https://www.arcgis.com")
+
+    #Configuration of application, see configuration.py, choose one and uncomment.
+    app.config.from_pyfile('config.cfg')
+
+    Bootstrap(app)  # flask-bootstrap
+    db.init_app(app)  # flask-mongoengine
+
+    lm.init_app(app)
+    lm.login_view = 'login'
+
+    from app import models
+
+    from app.routers.api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    return app

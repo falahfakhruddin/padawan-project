@@ -6,9 +6,10 @@ Licence: GPLv3
 
 from flask import url_for, redirect, render_template, flash, g
 from flask_login import login_user, logout_user, current_user, login_required
-from app import app, lm
+from app import create_app as app
+from app import lm
 from app.models.forms import ExampleForm, LoginForm
-from app.models import User
+from app.models.user_model import User
 
 
 @app.route('/')
